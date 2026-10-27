@@ -1,0 +1,125 @@
+<html>
+    <head>
+        <title>wprowadzenie jquery</title>
+        <script src="https://code.jquery.com/jquery-4.0.0.min.js" integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous"></script>
+        <script>
+            
+        $(function () {
+            $(document).keyup(function (e) {
+                if (e.key === "Enter") {
+                    let fraza = $("#szukaj").val().trim();
+
+                    if (fraza.length === 0) {
+                        $("#wynik").text("Wpisz frazę!").addClass("red");
+                    } else {
+                        $("#wynik").text("Szukam: " + fraza).removeClass("red");
+                    }
+                } else if (e.key === "Escape") {
+                    $("#wynik").text("")
+                    $("#szukaj").val("");
+                }
+            });
+                $(document).on("input",function(e){
+                    e.preventDefault();
+                    let dlugosc = $("#haslo").val().trim().length;
+                    if(dlugosc < 6){
+                        $("#sila").text("Słabe").css("color","red")
+                    }else if(dlugosc >= 6 && dlugosc <= 9){
+                        $("#sila").text("Średnie").css("color","orange")
+                    }else if(dlugosc = 10){
+                        $("#sila").text("Silne").css("color","green")
+                    }
+                })
+                $("#logowanie").submit(function(e){
+                    e.preventDefault();
+                    if($("#login").val() === "" ){
+                        $("#info").text("Podaj login!")
+                    }else if($("#pass").val().trim().length < 6){
+                        $("#info").text("Hasło jest za krótkie!").css("color","red")
+                    }else{
+                        $("#info").text("zalogowano!").css("color","black");
+                    }
+                })
+                $("#rozmiar").change(function(){
+                    $("#tekst").text("Aktualny rozmiar: " + $(this).val() + "px").css("font-size",$(this).val())
+                })
+                
+                $(".dodatek").on("change", function() {
+                    let suma = 20;
+
+                    $(".dodatek:checked").each(function() {
+                        suma += Number($(this).val());
+                    });
+
+                    $("#suma").text(suma);
+                });
+
+                $("#akcept").on("change", function() {
+                    $("#zamow").prop("disabled", !$(this).is(":checked"));
+                });
+                $("#licz").click(function() {
+                    let waga = $("#waga").val().trim();
+                    let wzrost = $("#wzrost").val().trim();
+
+                    if (waga === "" || wzrost === "") {
+                        $("#bmi").css("color", "red").text("Wypełnij oba pola!");
+                    } else if (isNaN(waga) || isNaN(wzrost)) {
+                        $("#bmi").css("color", "red").text("Wpisz poprawne liczby!");
+                    } else if (waga < 20 || waga > 300) {
+                        $("#bmi").css("color", "red").text("Waga musi być w zakresie 20–300 kg!");
+                    } else if (wzrost < 100 || wzrost > 250) {
+                        $("#bmi").css("color", "red").text("Wzrost musi być w zakresie 100–250 cm!");
+                    } else {
+                        let bmi = waga / Math.pow(wzrost / 100, 2);
+
+                        $("#bmi").css("color", "black").text("Twoje BMI wynosi: " + bmi.toFixed(1));
+                    }
+                });
+
+        });
+            
+
+            
+        </script>
+        <style>
+            .red{
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <input type="text" id="szukaj" placeholder="Szukaj...">
+        <p id="wynik" class="red"></p>
+        <hr>
+        <input type="password" id="haslo">
+        <p id="sila"></p>
+        <hr>
+        <form id="logowanie">
+            <input type="text" id="login" placeholder="Login">
+            <input type="password" id="pass" placeholder="Hasło">
+            <button type="submit">Zaloguj</button>
+        </form>
+        <p id="info"></p>
+        <hr>
+        <select id="rozmiar">
+        <option value="14">Mały</option>
+        <option value="20">Średni</option>
+        <option value="28">Duży</option>
+        </select>
+        <p id="tekst">Przykładowy tekst akapitu.</p>
+        <hr>
+        <label><input type="checkbox" class="dodatek" value="3"> Ser (3 zł)</label>
+        <label><input type="checkbox" class="dodatek" value="5"> Szynka (5 zł)</label>
+        <label><input type="checkbox" class="dodatek" value="4"> Pieczarki (4 zł)</label>
+        <p>Cena: <span id="suma">20</span> zł</p>
+        <label><input type="checkbox" id="akcept"> Potwierdzam zamówienie</label>
+        <button id="zamow" disabled>Zamów</button>
+        <hr>
+        Zadanie 6: Kalkulator BMI z walidacją
+
+        <input type="text" id="waga" placeholder="Waga (kg)">
+        <input type="text" id="wzrost" placeholder="Wzrost (cm)">
+        <button id="licz">Oblicz</button>
+        <p id="bmi"></p>
+    </body>
+</html>
